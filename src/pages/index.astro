@@ -1,24 +1,50 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+import cskLogo from "../assets/logos/csk.png";
+import miLogo from "../assets/logos/mi.png";
+import rcbLogo from "../assets/logos/rcb.png";
+import kkrLogo from "../assets/logos/kkr.png";
+import srhLogo from "../assets/logos/srh.png";
+import rrLogo from "../assets/logos/rr.png";
 
 const teams = [
     {
         id: "csk",
         name: "Chennai Super Kings",
         color: "bg-yellow-400",
-        logo: "/logos/csk.png",
+        logo: cskLogo,
     },
     {
         id: "mi",
         name: "Mumbai Indians",
         color: "bg-blue-600",
-        logo: "/logos/mi.png",
+        logo: miLogo,
     },
     {
         id: "rcb",
         name: "Royal Challengers Bangalore",
         color: "bg-red-600",
-        logo: "/logos/rcb.png",
+        logo: rcbLogo,
+    },
+    {
+        id: "kkr",
+        name: "Kolkata Knight Riders",
+        color: "bg-purple-600",
+        logo: kkrLogo,
+    },
+    {
+        id: "srh",
+        name: "Sunrisers Hyderabad",
+        color: "bg-orange-500",
+        logo: srhLogo,
+    },
+    {
+        id: "rr",
+        name: "Rajasthan Royals",
+        color: "bg-pink-500",
+        logo: rrLogo,
     },
 ];
 ---
@@ -46,7 +72,7 @@ const teams = [
                             <div
                                 class={`${team.color} rounded-lg shadow-lg p-6 flex flex-col items-center`}
                             >
-                                <img
+                                <Image
                                     src={team.logo}
                                     alt={`${team.name} logo`}
                                     class="w-32 h-32 object-contain mb-4"

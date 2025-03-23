@@ -8,19 +8,31 @@ export function getStaticPaths() {
             id: "csk",
             name: "Chennai Super Kings",
             color: "bg-yellow-400",
-            logo: "/logos/csk.png",
         },
         {
             id: "mi",
             name: "Mumbai Indians",
             color: "bg-blue-600",
-            logo: "/logos/mi.png",
         },
         {
             id: "rcb",
             name: "Royal Challengers Bangalore",
             color: "bg-red-600",
-            logo: "/logos/rcb.png",
+        },
+        {
+            id: "kkr",
+            name: "Kolkata Knight Riders",
+            color: "bg-purple-600",
+        },
+        {
+            id: "srh",
+            name: "Sunrisers Hyderabad",
+            color: "bg-orange-500",
+        },
+        {
+            id: "rr",
+            name: "Rajasthan Royals",
+            color: "bg-pink-500",
         },
     ];
     return teams.map((team) => {
@@ -105,14 +117,14 @@ const teamImages = Object.entries(imageModules).filter(([path]) =>
                                             await loader();
                                         return (
                                             <button
-                                                class="bg-selection-button relative rounded-lg overflow-hidden h-48 rounded-lg cursor-pointer hover:opacity-75 transition-opacity"
+                                                class="bg-selection-button relative rounded-lg overflow-hidden h-64 rounded-lg cursor-pointer hover:opacity-75 transition-opacity"
                                                 data-image-path={path}
                                             >
                                                 <Image
                                                     src={image}
                                                     alt={`Background ${index + 1}`}
-                                                    width={200}
-                                                    height={200}
+                                                    width={400}
+                                                    height={400}
                                                     class="w-full h-full object-cover"
                                                 />
                                             </button>
