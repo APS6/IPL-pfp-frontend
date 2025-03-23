@@ -75,17 +75,34 @@ const teamImages = Object.entries(imageModules).filter(([path]) =>
                         </h2>
                         <div
                             id="imageUploader"
-                            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center min-h-[200px] flex flex-col justify-center items-center"
                         >
-                            <label class="cursor-pointer">
+                            <label
+                                class="cursor-pointer w-full h-full flex flex-col items-center justify-center"
+                            >
                                 <input
                                     type="file"
                                     class="hidden"
                                     id="imageInput"
                                     accept="image/*"
                                 />
-                                <div class="text-gray-500">
+                                <svg
+                                    class="w-12 h-12 text-gray-400 mb-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <div class="text-gray-500 text-lg">
                                     Click or drag image here
+                                </div>
+                                <div class="text-gray-400 text-sm mt-1">
+                                    Supports JPG, PNG, WEBP
                                 </div>
                             </label>
                         </div>

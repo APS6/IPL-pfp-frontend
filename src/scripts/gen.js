@@ -8,6 +8,7 @@ const resultImage = document.getElementById("resultImage");
 const downloadButton = document.getElementById("downloadButton");
 const resetButton = document.getElementById("resetButton");
 const backgroundSelector = document.getElementById("backgroundSelector");
+const imageUploader = document.getElementById("imageUploader");
 let uploadedImage = null;
 let selectedBackground = null;
 let teamName = null;
@@ -20,7 +21,60 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add visual indication that it's selected
     firstBackgroundButton.classList.add("ring-3", "ring-blue-600");
   }
+
+  // Initialize drag and drop functionality
+  setupDragAndDrop();
 });
+
+// Set up drag and drop event listeners
+function setupDragAndDrop() {
+  // Prevent default behavior for all drag events
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    imageUploader.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  // Add visual feedback during drag
+  ["dragenter", "dragover"].forEach((eventName) => {
+    imageUploader.addEventListener(eventName, highlight, false);
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    imageUploader.addEventListener(eventName, unhighlight, false);
+  });
+
+  function highlight() {
+    imageUploader.classList.add("border-blue-500", "bg-blue-50");
+    imageUploader.classList.remove("border-gray-300");
+  }
+
+  function unhighlight() {
+    imageUploader.classList.remove("border-blue-500", "bg-blue-50");
+    imageUploader.classList.add("border-gray-300");
+  }
+
+  // Handle the actual file drop
+  imageUploader.addEventListener("drop", handleDrop, false);
+
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+
+    if (files.length) {
+      const file = files[0];
+      if (file.type.startsWith("image/")) {
+        uploadedImage = file;
+        previewImage.src = URL.createObjectURL(file);
+        uploadedImagePreview.classList.remove("hidden");
+        checkGenerateButton();
+      }
+    }
+  }
+}
 
 imageInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
