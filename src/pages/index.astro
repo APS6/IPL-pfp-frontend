@@ -1,11 +1,100 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const teams = [
+    {
+        id: "csk",
+        name: "Chennai Super Kings",
+        color: "bg-yellow-400",
+        logo: "/logos/csk.png",
+    },
+    {
+        id: "mi",
+        name: "Mumbai Indians",
+        color: "bg-blue-600",
+        logo: "/logos/mi.png",
+    },
+    {
+        id: "rcb",
+        name: "Royal Challengers Bangalore",
+        color: "bg-red-600",
+        logo: "/logos/rcb.png",
+    },
+];
 ---
 
 <Layout>
-	<Welcome />
+    <body class="bg-gray-100 min-h-screen">
+        <main class="container mx-auto px-4 py-8 min-h-[calc(100svh-72px)]">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                    IPL Team Profile Picture Generator
+                </h1>
+                <p class="text-xl text-gray-600">
+                    Create your custom IPL team-themed profile picture in
+                    seconds!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {
+                    teams.map((team) => (
+                        <a
+                            href={`/${team.id}`}
+                            class="transform hover:scale-105 transition-transform duration-200"
+                        >
+                            <div
+                                class={`${team.color} rounded-lg shadow-lg p-6 flex flex-col items-center`}
+                            >
+                                <img
+                                    src={team.logo}
+                                    alt={`${team.name} logo`}
+                                    class="w-32 h-32 object-contain mb-4"
+                                />
+                                <h2 class="text-white text-xl font-semibold text-center">
+                                    {team.name}
+                                </h2>
+                            </div>
+                        </a>
+                    ))
+                }
+            </div>
+
+            <div class="mt-12 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                    How It Works
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-3xl mb-4">1️⃣</div>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Choose Your Team
+                        </h3>
+                        <p class="text-gray-600">
+                            Select your favorite IPL team from the options above
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-3xl mb-4">2️⃣</div>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Upload Your Photo
+                        </h3>
+                        <p class="text-gray-600">
+                            Upload a clear photo of yourself to customize
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-3xl mb-4">3️⃣</div>
+                        <h3 class="text-xl font-semibold mb-2">
+                            Generate & Download
+                        </h3>
+                        <p class="text-gray-600">
+                            Get your custom team-themed profile picture
+                            instantly
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
 </Layout>

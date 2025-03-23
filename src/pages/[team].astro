@@ -1,0 +1,205 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+export function getStaticPaths() {
+    const teams = [
+        {
+            id: "csk",
+            name: "Chennai Super Kings",
+            color: "bg-yellow-400",
+            logo: "/logos/csk.png",
+        },
+        {
+            id: "mi",
+            name: "Mumbai Indians",
+            color: "bg-blue-600",
+            logo: "/logos/mi.png",
+        },
+        {
+            id: "rcb",
+            name: "Royal Challengers Bangalore",
+            color: "bg-red-600",
+            logo: "/logos/rcb.png",
+        },
+    ];
+    return teams.map((team) => {
+        return {
+            params: { team: team.id },
+            props: team,
+        };
+    });
+}
+
+const teamDetails = Astro.props;
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/teams/**/*.{png,jpg,jpeg,webp}",
+);
+
+const teamImages = Object.entries(imageModules).filter(([path]) =>
+    path.includes(`/teams/${teamDetails.id}/`),
+);
+---
+
+<Layout>
+    <body class="bg-gray-100 min-h-screen">
+        <main class="container mx-auto px-4 py-8 min-h-[calc(100svh-72px)]">
+            <div class="flex flex-col items-center">
+                <h1 class="text-4xl font-bold text-center mb-2">
+                    {teamDetails.name} Profile Picture Generator
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    Upload your photo and get a custom {teamDetails.name}-themed
+                    profile picture
+                </p>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl"
+                >
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <h2 class="text-xl font-semibold mb-4">
+                            Upload Your Photo
+                        </h2>
+                        <div
+                            id="imageUploader"
+                            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                        >
+                            <label class="cursor-pointer">
+                                <input
+                                    type="file"
+                                    class="hidden"
+                                    id="imageInput"
+                                    accept="image/*"
+                                />
+                                <div class="text-gray-500">
+                                    Click or drag image here
+                                </div>
+                            </label>
+                        </div>
+                        <div id="uploadedImagePreview" class="mt-4 hidden">
+                            <span
+                                class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm mb-2"
+                                >Image uploaded</span
+                            >
+                            <img
+                                id="previewImage"
+                                class="max-h-[200px] mx-auto rounded-md"
+                                alt="Preview"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md h-full">
+                        <h2 class="text-xl font-semibold mb-4">
+                            Choose Background
+                        </h2>
+                        <div
+                            class="grid grid-cols-2 gap-4"
+                            id="backgroundSelector"
+                        >
+                            {
+                                teamImages.map(
+                                    async ([path, loader], index) => {
+                                        const { default: image } =
+                                            await loader();
+                                        return (
+                                            <button
+                                                class="bg-selection-button relative rounded-lg overflow-hidden h-48 rounded-lg cursor-pointer hover:opacity-75 transition-opacity"
+                                                data-image-path={path}
+                                            >
+                                                <Image
+                                                    src={image}
+                                                    alt={`Background ${index + 1}`}
+                                                    width={200}
+                                                    height={200}
+                                                    class="w-full h-full object-cover"
+                                                />
+                                            </button>
+                                        );
+                                    },
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    id="generateButton"
+                    class={`mt-8 px-6 py-3 ${teamDetails.color} text-white rounded-lg flex items-center gap-2 disabled:opacity-50 enabled:cursor-pointer`}
+                    disabled
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                        ></path>
+                    </svg>
+                    Generate Profile Picture
+                </button>
+
+                <div
+                    id="result"
+                    class="hidden w-full max-w-6xl mt-8 bg-white p-6 rounded-lg shadow-md text-center"
+                >
+                    <h2 class="text-xl font-semibold mb-4">
+                        Your {teamDetails.name} Profile Picture
+                    </h2>
+                    <img
+                        id="resultImage"
+                        class="max-h-[400px] mx-auto rounded-md mb-4"
+                    />
+                    <div class="flex justify-center gap-4">
+                        <button
+                            id="downloadButton"
+                            class="px-4 py-2 bg-green-500 text-white rounded-lg flex items-center gap-2 cursor-pointer"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                ></path>
+                            </svg>
+                            Download
+                        </button>
+                        <button
+                            id="resetButton"
+                            class="px-4 py-2 bg-gray-500 text-white rounded-lg flex items-center gap-2 cursor-pointer"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                ></path>
+                            </svg>
+                            Start Over
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="../scripts/gen.js"></script>
+    </body>
+</Layout>
